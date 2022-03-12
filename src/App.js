@@ -1,25 +1,19 @@
-import {  BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 
 import AuthProvider from "./context/auth/Provider";
 import MenuProvider from "./context/menu/Provider";
 
-import Login from './views/login/index'
-import Home from './views/home/index'
-import NoFound from './views/404/Nofound'
+import Views from './routes/index';
 
 const App = () => {
   return (
-    <AuthProvider>
-      <MenuProvider>
-        <Router>
-          <Routes>
-            <Route path="/" exact element={<Login />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="*" element={<NoFound />} />
-          </Routes>
-        </Router>
-      </MenuProvider>
-    </AuthProvider>
+      <AuthProvider>
+        <MenuProvider>
+          <BrowserRouter>
+           <Views />
+          </BrowserRouter>
+        </MenuProvider>
+      </AuthProvider>
   );
 }
 

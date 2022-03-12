@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useContext } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate, useLocation, Outlet } from 'react-router-dom';
 
 import Spinner from '../../components/Spinner';
 import AuthContext from "../../context/auth";
@@ -8,37 +8,36 @@ import AuthContext from "../../context/auth";
 const Login = () => {
     const [user, setUser] = useState('');
     const [pass, setPass] = useState('');
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     const navigate = useNavigate();
-    const { isAuthenticated, onLogin } = useContext(AuthContext);
+    const location = useLocation();
+    const { isAuthenticated, onLogin, logged } = useContext(AuthContext);
 
-    const checkIfUserIsAuthRef = useRef();
-
-    const checkIfUserIsAuth = () => {
-        if(isAuthenticated) {
-            navigate('/home');
-        }else{
-            setIsLoading(false);
-        }
-    };
-
-    checkIfUserIsAuthRef.current = checkIfUserIsAuth;
-
-    useEffect(() => {
-        checkIfUserIsAuthRef?.current()?.catch(null);
-      }, []);
-
-
+    console.log(isAuthenticated)
     const handleSubmitLogin = (e) => {
         e.preventDefault();
 
-        if(user?.length && pass?.length){
-            onLogin(user, pass);
-            navigate('/home');
-        }else if(user === ''|| pass === '' || user !== 'challenge@alkemy.org' || pass !== 'react') {
-            alert('El usuario o contraseña son incorrectos')
+      
+        onLogin(user, pass);
+        console.log(isAuthenticated)
+        console.log(logged)
+
+        if(logged) {
+            if(location.state?.from){
+                navigate(location.state.from);
+                console.log('Autenticado')
+                setIsLoading(false);
+            }
+        }else if(!logged){
+            console.log('no estas autenticado')
+            setIsLoading(false);
+            return <Navigate to="/" state={{ from: location }} replace />;
         }
+        if(user === ''|| pass === '' || user !== 'challenge@alkemy.org' || pass !== 'react') {
+                alert('El usuario o contraseña son incorrectos')
+        }
+
     }
 
     if(isLoading) {
@@ -76,6 +75,7 @@ const Login = () => {
                     </form>
                 </div>
             </div>
+            <Outlet />
         </div>
     )
 }
