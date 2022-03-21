@@ -1,13 +1,13 @@
 import { useEffect, useState, useRef, useContext } from "react";
-import { useNavigate, Navigate, useLocation, Outlet } from 'react-router-dom';
+import { useNavigate, Navigate, Outlet, useLocation } from 'react-router-dom';
 
 import Spinner from '../../components/Spinner';
 import AuthContext from "../../context/auth";
 
 
 const Login = () => {
-    const [user, setUser] = useState('');
-    const [pass, setPass] = useState('');
+    const [user, setUser] = useState(null);
+    const [pass, setPass] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
     const navigate = useNavigate();
@@ -24,12 +24,11 @@ const Login = () => {
         console.log(logged)
 
         if(logged) {
-            if(location.state?.from){
-                navigate(location.state.from);
-                console.log('Autenticado')
-                setIsLoading(false);
-            }
-        }else if(!logged){
+            navigate('/home');
+            console.log('Autenticado')
+            setIsLoading(false);
+        }
+        if(!logged){
             console.log('no estas autenticado')
             setIsLoading(false);
             return <Navigate to="/" state={{ from: location }} replace />;
@@ -43,12 +42,12 @@ const Login = () => {
     if(isLoading) {
         return <Spinner />;
     }
-
+    
     return(
         <div className="container" style={{height: '100vh'}}>
             <div className="row justify-content-center align-items-center" style={{height: '100vh'}}>
                 <div className="col-7">
-                    <form onSubmit={handleSubmitLogin}>
+                    <form >
                         <div className="mb-3">
                             <label className="form-label">User</label>
                             <input 
@@ -70,7 +69,7 @@ const Login = () => {
                              />
                         </div>
                         <div className="d-grid">
-                            <button type="submit" className="btn btn-block btn-primary">Acceder</button>
+                            <button onClick={() => navigate('/home')} type="submit" className="btn btn-block btn-primary">Acceder</button>
                         </div>
                     </form>
                 </div>

@@ -9,17 +9,18 @@ import AuthContext from "../context/auth";
 
 const ProtectedRoutes = () => {
 
-  const { isAuthenticated } = useContext(AuthContext);
-  console.log(isAuthenticated)
+  const { logged } = useContext(AuthContext);
+  console.log(logged)
 
   const location = useLocation();
   // const isAuth = useAuth();
-  return isAuthenticated ? (
-    <Outlet/>
-  )
-    : (
-    <Navigate to="/" replace state={{from: location}}/>
-  );
+  return <Outlet />
+  // return logged ? (
+  //   <Outlet/>
+  // )
+  //   : (
+  //   <Navigate to="/" replace state={{from: location}}/>
+  // );
 }
 
 export default ProtectedRoutes;
