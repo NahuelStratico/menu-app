@@ -20,7 +20,7 @@ const Veggie = ({veggie}) => {
                 {
                     veggie.map(recipe => {
                         return(
-                            <SplideSlide key={recipe.id}>
+                            <SplideSlide key={recipe.id} >
                                 <Card>
                                     <p>{recipe.title}</p>
                                     <img src={recipe.image} alt={recipe.title} />
@@ -37,6 +37,8 @@ const Veggie = ({veggie}) => {
 
 const Wrapper = styled.div`
     margin: 4rem 0;
+    /* display: grid;
+    grid-template-columns: 1fr; */
 `;
 
 const Card = styled.div`
